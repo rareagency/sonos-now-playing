@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "install:ikea": "cd packages/ikea && npm install",
+    "install:sonos-api": "cd packages/sonos-api && npm install",
+    "install:all": "npm run install:ikea && npm run install:sonos-api"
+  },
   "workspaces": [
     "packages/*"
   ]

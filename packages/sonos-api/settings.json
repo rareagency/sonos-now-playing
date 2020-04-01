@@ -8,5 +8,6 @@
   "announceVolume": 40,
   "library": {
     "randomQueueLimit": 50
-  }
+  },
+  "webhook": "http://localhost:5007/"
 }

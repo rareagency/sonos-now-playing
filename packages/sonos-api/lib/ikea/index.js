@@ -23,7 +23,11 @@ const COLORS = [
   "f5faf6"
 ];
 
-async function run() {
+let runningId = null;
+
+module.exports = async function changeLight(tempo, id) {
+  runningId = id;
+
   const tradfri = require("node-tradfri").create({
     coapClientPath: "./node_modules/node-tradfri/lib/coap-client", // use embedded coap-client
     identity: "c051a5a0740b11eaa80c01a76f276d41",
@@ -34,20 +38,27 @@ async function run() {
   const devices = await tradfri.getDevices();
   const bulbs = devices.filter(device => device.name.includes("TRADFRI bulb"));
   let i = 0;
-  while (true) {
+
+  while (runningId === id) {
+
     for (const device of bulbs) {
-      await tradfri.turnOnDevice(device.id);
+      tradfri.turnOnDevice(device.id);
 
       await new Promise(resolve => setTimeout(resolve, 10));
-      console.log(i);
-      await tradfri.setDeviceState(device.id, {
-        color: COLORS[i % (COLORS.length - 1)]
+      const randomColor = COLORS[Math.floor(Math.random() * COLORS.length)];
+
+      tradfri.setDeviceState(device.id, {
+        color: COLORS[2],
+        brightness: i % 2 === 0 ? 30 : 100
       });
+
       await new Promise(resolve => setTimeout(resolve, 10));
     }
-    await new Promise(resolve => setTimeout(resolve, 200));
+
+    await new Promise(resolve => setTimeout(resolve, tempo - 20));
+
+    console.log('TT')
     i++;
   }
 }
 
-run();
