@@ -1,0 +1,21 @@
+{
+  "name": "ikea",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "coap": "^0.23.1",
+    "hsl-to-hex": "^1.0.0",
+    "node-fetch": "^2.6.0",
+    "node-tradfri": "^0.2.3",
+    "node-tradfri-client": "^2.1.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
