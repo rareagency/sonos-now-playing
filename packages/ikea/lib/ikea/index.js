@@ -37,25 +37,38 @@ let running = false;
 async function loop(id, tempo) {
   running = true;
   let i = 0;
+  const randomColor = COLORS[Math.floor(Math.random() * COLORS.length)];
+
+  await Promise.all(
+    Object.values(bulbs)
+      .slice(0, 1)
+      .map(b => b.setColor(randomColor))
+  );
+
+  const controlledBulbs = Object.values(bulbs).slice(0, 1);
+
   while (runningId === id) {
-    const randomColor = COLORS[Math.floor(Math.random() * COLORS.length)];
+    const start = Date.now();
+    if (i % 100 === 0) {
+      await Promise.all(
+        controlledBulbs.map(b => b.setHue(Math.round(360 * Math.random())))
+      );
+    }
 
     if (i % 2 === 0) {
       await Promise.all(
-        Object.values(bulbs)
-          .slice(0, 1)
-          .map(b => b.setColor(randomColor))
+        controlledBulbs.map(b => b.setSaturation(30 + ((i * 10) % 100)))
       );
     } else {
       await Promise.all(
-        Object.values(bulbs)
-          .slice(0, 1)
-          .map(b => b.setBrightness(i % 3 === 0 ? 100 : 254))
+        controlledBulbs.map(b => b.setBrightness(i % 3 === 0 ? 100 : 254))
       );
     }
 
     i++;
-    await new Promise(resolve => setTimeout(resolve, tempo));
+    await new Promise(resolve =>
+      setTimeout(resolve, tempo - (Date.now() - start))
+    );
   }
 }
 
