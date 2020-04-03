@@ -1,6 +1,6 @@
 "use strict";
 const http = require("http");
-const changeLight = require("./lib/ikea");
+const onSongChange = require("./lib/patterns/strobo");
 const getSongDetails = require("./lib/spotify");
 
 let currentTrack;
@@ -35,7 +35,7 @@ let server = http.createServer((req, res) => {
       const tempo = (60 / songDetails.tempo) * 1000;
       console.log("tempo: " + tempo);
 
-      await changeLight(tempo, Date.now());
+      await onSongChange(tempo, Date.now());
     }
   });
 });
