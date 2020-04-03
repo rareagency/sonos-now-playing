@@ -42,26 +42,34 @@ async function loop(id, tempo) {
   console.log("Initial hue", initialHue, "tempo", tempo);
   while (runningId === id) {
     const start = Date.now();
-    const controlledBulbs = Object.values(bulbs);
+    const controlledBulbs = Object.values(bulbs).slice(0, 1);
 
-    if ((i < 100 && i % 20) || i % 100 === 0) {
-      const hue = Math.max(
-        0,
-        Math.min(360, initialHue + (-10 + Math.round(20 * Math.random())))
-      );
-      console.log("Set hue", hue);
-      await Promise.all(controlledBulbs.map(b => b.setHue(hue)));
-    }
+    // if (i % 5) {
+    //   const hue = Math.max(
+    //     0,
+    //     Math.min(360, initialHue + (-10 + Math.round(20 * Math.random())))
+    //   );
+    //   console.log("Set hue", hue);
+    //   await Promise.all(controlledBulbs.map(b => b.setHue(hue)));
+    // }
 
     if (i % 2 === 0) {
-      const saturation = 30 + ((i * 10) % 100);
-      console.log("Set saturation", saturation);
-      await Promise.all(controlledBulbs.map(b => b.setSaturation(saturation)));
-    } else {
-      console.log("Update brightnesses");
+      // const saturation = 30 + ((i * 10) % 100);
+      // console.log("Set saturation", saturation);
+      // await Promise.all(controlledBulbs.map(b => b.setSaturation(saturation)));
       await Promise.all(
-        controlledBulbs.map(b => b.setBrightness(b.dimmer === 100 ? 20 : 100))
+        controlledBulbs.map(b => {
+          const brightness = i % 4 === 0 ? 10 : 100;
+          console.log(
+            "Update brightness",
+            b.dimmer,
+            brightness,
+            (tempo - (Date.now() - start)) / 1000
+          );
+          b.setBrightness(brightness, (tempo - (Date.now() - start)) / 1000);
+        })
       );
+    } else {
     }
 
     i++;
