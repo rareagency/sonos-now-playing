@@ -1,7 +1,7 @@
 "use strict";
 const http = require("http");
-const onSongChange = require("./lib/patterns/strobo");
 const getSongDetails = require("./lib/spotify");
+const patterns = require("./lib/patterns");
 
 let currentTrack;
 
@@ -25,17 +25,11 @@ let server = http.createServer((req, res) => {
       // x-sonos-spotify:spotify:track:0cGdom0OaMZ43cDF97WtXH?sid=9&flags=0&sn=3 ->
       // 0cGdom0OaMZ43cDF97WtXH
       const trackSpotifyId = requestCurrentTrack.split(":")[3].split("?")[0];
-
-      console.log(trackSpotifyId);
       const songDetails = await getSongDetails(trackSpotifyId);
-
+      console.log('SONG CHANGED:');
       console.log(songDetails);
-      // const tempo = songDetails.tempo * (songDetails.time_signature * 2);
 
-      const tempo = (60 / songDetails.tempo) * 1000;
-      console.log("tempo: " + tempo);
-
-      await onSongChange(tempo, Date.now());
+      await patterns.strobo(songDetails, Date.now());
     }
   });
 });
