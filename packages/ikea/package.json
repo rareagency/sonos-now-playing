@@ -5,11 +5,18 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "airplay": "^0.0.3",
+    "airplay-js": "^0.3.0",
+    "airplay2": "^0.1.8",
+    "airplayer": "^2.0.0",
     "coap": "^0.23.1",
     "hsl-to-hex": "^1.0.0",
     "node-fetch": "^2.6.0",
     "node-tradfri": "^0.2.3",
     "node-tradfri-client": "^2.1.4"
+  },
+  "resolutions": {
+    "mdns": "2.5.1"
   },
   "devDependencies": {},
   "scripts": {

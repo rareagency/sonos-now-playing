@@ -9,7 +9,7 @@ module.exports = async function getSongDetails(songId) {
     `https://api.spotify.com/v1/audio-features/${songId}`,
     {
       headers: {
-        Authorization: `Bearer BQBrg9BfzOnMDFQPXjFktk5SLYUzAWiNQPov-dfFPbY-v45sOyIzgVszd8NSGYTzJRk1eHHK9kBD7sm3BOoY0TAVMIVBwMlyvXmY2JVXge4i6gxmQd9snRwOPJSV7PhBt_1eMfsLqJJmXjo`
+        Authorization: `Bearer BQB7aYlbzfQJWTT6ajHE5y7CjDVasi1LTaa71d_Ewl_5VXa_v6NX9r9mH97UV0LMqjKCtuMIseclC-qXxGuwF0hf0f08yLAwG2UHBHHjxO_dDB07oHTusJxOTUW40bRr3fCPyJGP5sLBNHg`
       }
     }
   );

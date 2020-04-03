@@ -32,7 +32,7 @@ let server = http.createServer((req, res) => {
       console.log(songDetails);
       // const tempo = songDetails.tempo * (songDetails.time_signature * 2);
 
-      const tempo = (60 / songDetails.tempo) * 1000 * 2;
+      const tempo = (60 / songDetails.tempo) * 1000;
       console.log("tempo: " + tempo);
 
       await changeLight(tempo, Date.now());

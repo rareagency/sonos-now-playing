@@ -38,40 +38,47 @@ async function loop(id, tempo) {
   running = true;
   let i = 0;
 
-  const randomColor = COLORS[Math.floor(Math.random() * COLORS.length)];
-  const controlledBulbs = Object.values(bulbs).slice(0, 1);
-
-  await Promise.all(controlledBulbs.map(b => b.setColor(randomColor)));
-
+  const initialHue = Math.round(Math.random() * 360);
+  console.log("Initial hue", initialHue, "tempo", tempo);
   while (runningId === id) {
-    console.log("beat");
     const start = Date.now();
-    if (i % 100 === 0) {
-      await Promise.all(
-        controlledBulbs.map(b => b.setHue(Math.round(360 * Math.random())))
+    const controlledBulbs = Object.values(bulbs);
+
+    if ((i < 100 && i % 20) || i % 100 === 0) {
+      const hue = Math.max(
+        0,
+        Math.min(360, initialHue + (-10 + Math.round(20 * Math.random())))
       );
+      console.log("Set hue", hue);
+      await Promise.all(controlledBulbs.map(b => b.setHue(hue)));
     }
 
     if (i % 2 === 0) {
-      await Promise.all(
-        controlledBulbs.map(b => b.setSaturation(30 + ((i * 10) % 100)))
-      );
+      const saturation = 30 + ((i * 10) % 100);
+      console.log("Set saturation", saturation);
+      await Promise.all(controlledBulbs.map(b => b.setSaturation(saturation)));
     } else {
+      console.log("Update brightnesses");
       await Promise.all(
-        controlledBulbs.map(b => b.setBrightness(i % 3 === 0 ? 100 : 254))
+        controlledBulbs.map(b => b.setBrightness(b.dimmer === 100 ? 20 : 100))
       );
     }
 
     i++;
+    console.log(tempo - (Date.now() - start), "until next tick");
     await new Promise(resolve =>
       setTimeout(resolve, tempo - (Date.now() - start))
     );
   }
 }
 
-function tradfri_deviceUpdated(device) {
+async function tradfri_deviceUpdated(device) {
   if (device.type === AccessoryTypes.lightbulb) {
-    bulbs[device.instanceId] = device.lightList[0];
+    if (!bulbs[device.instanceId]) {
+      console.log("Found device", device.name);
+      await device.lightList[0].turnOn();
+      bulbs[device.instanceId] = device.lightList[0];
+    }
   }
 }
 module.exports = async function changeLight(tempo, id) {
