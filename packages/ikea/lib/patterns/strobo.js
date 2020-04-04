@@ -12,7 +12,7 @@ module.exports = async function onSongChange(id, songDetails, songAnalysis) {
   const bulbs = Object.values(getBulbs()).slice(1, 2);
 
   // Set song color
-  const initialHue = Math.round(Math.random() * 360);
+  const initialHue = Math.round(songDetails.energy * 360);
   await Promise.all(bulbs.map(b => b.setHue(initialHue)));
 
   while (runningId === id) {
@@ -23,16 +23,14 @@ module.exports = async function onSongChange(id, songDetails, songAnalysis) {
     const tempo = getTempo(songAnalysis, duration);
     const loudness = getLoudness(songAnalysis, duration);
 
-    console.log({ tempo, loudness });
+    console.log({ tempo, loudness, energy: songDetails.energy });
 
-    if (tick % 2 === 0) {
-      await Promise.all(
-        bulbs.map(b => {
-          const brightness = tick % 4 === 0 ? 1 : 100 - loudness;
-          b.setBrightness(brightness, 0);
-        })
-      );
-    }
+    await Promise.all(
+      bulbs.map(b => {
+        const brightness = tick % 2 === 0 ? 1 : 100 - loudness;
+        b.setBrightness(brightness, 0);
+      })
+    );
 
     const nextTickIn = (60 / tempo) * 1000;
     const tickDuration = Date.now() - tickStart;
