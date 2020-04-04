@@ -32,7 +32,7 @@ module.exports.getSongAnalysis = async function getSongAnalysis(
   songId
 ) {
   const response = await fetch(
-    `https://api.spotify.com/v1/audio-features/${songId}`,
+    `https://api.spotify.com/v1/audio-analysis/${songId}`,
     {
       headers: {
         Authorization: `Bearer ${authToken}`
@@ -59,4 +59,15 @@ module.exports.getSongDetails = async function getSongDetails(
 
   const body = await response.json();
   return body;
+};
+
+module.exports.getAlbumCover = async function getAlbumCover(authToken, songId) {
+  const response = await fetch(`https://api.spotify.com/v1/tracks/${songId}`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`
+    }
+  });
+
+  const body = await response.json();
+  return body.images[0].url;
 };

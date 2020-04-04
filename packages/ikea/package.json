@@ -6,6 +6,7 @@
   "main": "index.js",
   "dependencies": {
     "coap": "^0.23.1",
+    "dominant-color": "^0.0.1",
     "hsl-to-hex": "^1.0.0",
     "node-fetch": "^2.6.0",
     "node-tradfri": "^0.2.3",

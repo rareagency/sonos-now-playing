@@ -14,12 +14,15 @@ let server = http.createServer((req, res) => {
 
     const json = JSON.parse(buffer.join(""));
 
+    if (!json.data.state) {
+      console.log(json);
+    }
     const requestCurrentTrack = json.data.state.currentTrack.uri;
 
     const isSongChange =
       json.type === "transport-state" && currentTrack != requestCurrentTrack;
 
-    if (isSongChange) {
+    if (isSongChange && requestCurrentTrack) {
       currentTrack = requestCurrentTrack;
 
       // parse spotify id from sonos spotify URI e.g.:

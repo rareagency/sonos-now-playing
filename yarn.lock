@@ -203,6 +203,11 @@ bindings@^1.3.1:
   dependencies:
     file-uri-to-path "1.0.0"
 
+bindings@~1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/bindings/-/bindings-1.2.1.tgz#14ad6113812d2d37d72e67b4cacb4bb726505f11"
+  integrity sha1-FK1hE4EtLTfXLme0ystLtyZQXxE=
+
 bl@^1.0.0:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/bl/-/bl-1.2.2.tgz#a160911717103c07410cef63ef51b397c025af9c"
@@ -517,6 +522,14 @@ doctrine@^2.1.0:
   integrity sha512-35mSku4ZXK0vfCuHEDAwt55dg2jNajHZ1odvF+8SSr82EsZY4QmXfuWso8oEd8zRhVObSN18aM0CjSdoBX7zIw==
   dependencies:
     esutils "^2.0.2"
+
+dominant-color@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/dominant-color/-/dominant-color-0.0.1.tgz#8d1321eec71635d9b56cb742ce75363455ead6d4"
+  integrity sha1-jRMh7scWNdm1bLdCznU2NFXq1tQ=
+  dependencies:
+    imagemagick "^0.1.3"
+    rgb-hex "^1.0.0"
 
 ecc-jsbn@~0.1.1:
   version "0.1.2"
@@ -1011,6 +1024,11 @@ ignore@^3.3.3:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.3.10.tgz#0a97fb876986e8081c631160f8f9f389157f0043"
   integrity sha512-Pgs951kaMm5GXP7MOvxERINe3gsaVjUWFm+UZPSq9xYriQAksyhg0csnS0KXSNRD5NmNdapXEpjxG49+AKh/ug==
 
+imagemagick@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/imagemagick/-/imagemagick-0.1.3.tgz#7483cea093b4d9f2e2f396857adc8821b537c56a"
+  integrity sha1-dIPOoJO02fLi85aFetyIIbU3xWo=
+
 imurmurhash@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
@@ -1266,6 +1284,14 @@ mdns-server@^1.0.8:
   dependencies:
     dns-packet "^1.1.1"
 
+mdns@2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/mdns/-/mdns-2.5.1.tgz#f66d199de26dc372740f9c84c9b95db432a4fc46"
+  integrity sha512-JglS7Ed3Yf0BCpyC7LXA1MUrumMV8jj4g67nT3+m886SFYllz2HWBg8ObywFXWbBSv5gW0meMOOS4vVa2jZGCw==
+  dependencies:
+    bindings "~1.2.1"
+    nan "^2.14.0"
+
 mime-db@1.43.0:
   version "1.43.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.43.0.tgz#0a12e0502650e473d735535050e7c8f4eb4fae58"
@@ -1349,7 +1375,7 @@ mute-stream@0.0.7:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
   integrity sha1-MHXOk7whuPq0PhvE2n6BFe0ee6s=
 
-nan@2.14.x:
+nan@2.14.x, nan@^2.14.0:
   version "2.14.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
   integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==
@@ -1816,6 +1842,11 @@ reusify@^1.0.0:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/reusify/-/reusify-1.0.4.tgz#90da382b1e126efc02146e90845a88db12925d76"
   integrity sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==
+
+rgb-hex@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/rgb-hex/-/rgb-hex-1.0.0.tgz#bfaf8cd9cd9164b5a26d71eb4f15a0965324b3c1"
+  integrity sha1-v6+M2c2RZLWibXHrTxWgllMks8E=
 
 rimraf@~2.6.2:
   version "2.6.3"
