@@ -1,8 +1,6 @@
 const fetch = require("node-fetch");
 
-const spotifyApiUrl = "https://api.spotify.com/v1/audio-features/{id}";
-
-module.exports = async function getSongDetails(songId) {
+module.exports.getAuthToken = async function getAuthToken() {
   const params = {
     grant_type: "refresh_token",
     refresh_token:
@@ -26,12 +24,35 @@ module.exports = async function getSongDetails(songId) {
   });
 
   const { access_token } = await tokenResponse.json();
+  return access_token;
+};
 
+module.exports.getSongAnalysis = async function getSongAnalysis(
+  authToken,
+  songId
+) {
   const response = await fetch(
     `https://api.spotify.com/v1/audio-features/${songId}`,
     {
       headers: {
-        Authorization: `Bearer ${access_token}`
+        Authorization: `Bearer ${authToken}`
+      }
+    }
+  );
+
+  const body = await response.json();
+  return body;
+};
+
+module.exports.getSongDetails = async function getSongDetails(
+  authToken,
+  songId
+) {
+  const response = await fetch(
+    `https://api.spotify.com/v1/audio-features/${songId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`
       }
     }
   );

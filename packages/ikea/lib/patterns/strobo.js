@@ -24,34 +24,35 @@ const COLORS = [
 ];
 
 let runningId = null;
-let running = false;
 
-module.exports = async function onSongChange(songDetails, id) {
-  const tempo = (60 / songDetails.tempo) * 1000;
+module.exports = async function onSongChange(id, songDetails, songAnalysis) {
+  runningId = id;
 
-  running = true;
-  let i = 0;
+  let tick = 0;
+  const startTime = Date.now();
 
-  if (!runningId) {
-    runningId = id;
-  }
-
-  const initialHue = Math.round(Math.random() * 360);
-  const bulbs = Object.values(getBulbs());
+  // const initialHue = Math.round(Math.random() * 360);
+  const bulbs = Object.values(getBulbs()).slice(1, 2);
 
   while (runningId === id) {
     const start = Date.now();
 
-    if (i % 2 === 0) {
-      await Promise.all(
-        Object.values(bulbs).map(b => {
-          const brightness = i % 4 === 0 ? 10 : 100;
-          b.setBrightness(brightness, (tempo - (Date.now() - start)) / 1000);
-        })
-      );
-    }
-
-    i++;
+    await Promise.all(
+      Object.values(bulbs).map(b => {
+        const brightness = tick % 2 === 0 ? 10 : 100;
+        console.log("BEAT", brightness);
+        b.setBrightness(brightness, 0);
+      })
+    );
+    // if (i % 2 === 0) {
+    //   await Promise.all(
+    //     Object.values(bulbs).map(b => {
+    //       const brightness = i % 4 === 0 ? 10 : 100;
+    //       b.setBrightness(brightness, (tempo - (Date.now() - start)) / 1000);
+    //     })
+    //   );
+    // }
+    tick++;
     await new Promise(resolve =>
       setTimeout(resolve, tempo - (Date.now() - start))
     );

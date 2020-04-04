@@ -1,6 +1,6 @@
 "use strict";
 const http = require("http");
-const getSongDetails = require("./lib/spotify");
+const spotify = require("./lib/spotify");
 const patterns = require("./lib/patterns");
 
 let currentTrack;
@@ -15,6 +15,7 @@ let server = http.createServer((req, res) => {
     const json = JSON.parse(buffer.join(""));
 
     const requestCurrentTrack = json.data.state.currentTrack.uri;
+
     const isSongChange =
       json.type === "transport-state" && currentTrack != requestCurrentTrack;
 
@@ -25,11 +26,18 @@ let server = http.createServer((req, res) => {
       // x-sonos-spotify:spotify:track:0cGdom0OaMZ43cDF97WtXH?sid=9&flags=0&sn=3 ->
       // 0cGdom0OaMZ43cDF97WtXH
       const trackSpotifyId = requestCurrentTrack.split(":")[3].split("?")[0];
-      const songDetails = await getSongDetails(trackSpotifyId);
-      console.log('SONG CHANGED:');
-      console.log(songDetails);
 
-      await patterns.strobo(songDetails, Date.now());
+      const authToken = await spotify.getAuthToken();
+      const songDetails = await spotify.getSongDetails(
+        authToken,
+        trackSpotifyId
+      );
+      const getSongAnalysis = await spotify.getSongAnalysis(
+        authToken,
+        trackSpotifyId
+      );
+
+      await patterns.strobo(currentTrack, songDetails, getSongAnalysis);
     }
   });
 });
