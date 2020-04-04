@@ -8,21 +8,26 @@ let currentTrack;
 let server = http.createServer((req, res) => {
   const buffer = [];
 
-  req.on("data", data => buffer.push(data.toString()));
+  req.on("data", (data) => buffer.push(data.toString()));
   req.on("end", async () => {
     res.end();
 
     const json = JSON.parse(buffer.join(""));
 
-    if (!json.data.state) {
-      console.log(json);
+    if (json.type !== "transport-state") {
+      return;
     }
+
     const requestCurrentTrack = json.data.state.currentTrack.uri;
 
     const isSongChange =
       json.type === "transport-state" && currentTrack != requestCurrentTrack;
 
-    if (isSongChange && requestCurrentTrack) {
+    if (
+      isSongChange &&
+      requestCurrentTrack &&
+      requestCurrentTrack.includes("spotify")
+    ) {
       currentTrack = requestCurrentTrack;
 
       // parse spotify id from sonos spotify URI e.g.:
@@ -39,8 +44,13 @@ let server = http.createServer((req, res) => {
         authToken,
         trackSpotifyId
       );
+      console.log("start");
 
-      await patterns.strobo(currentTrack, songDetails, getSongAnalysis);
+      await Promise.all([
+        patterns.strobo(currentTrack, songDetails, getSongAnalysis),
+        patterns.smooth(currentTrack, songDetails, getSongAnalysis),
+        patterns.party(currentTrack, songDetails, getSongAnalysis),
+      ]);
     }
   });
 });

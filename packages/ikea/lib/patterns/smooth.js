@@ -14,15 +14,17 @@ module.exports = async function onSongChange(id, songDetails, songAnalysis) {
   // Set song color
   const initialHue = Math.round(songDetails.energy * 360);
 
-  const starts = songDetails.energy > 0.8 && songDetails.danceability < 0.7;
+  const starts = songDetails.energy < 0.75;
+  console.log("smooth", starts);
 
   if (starts) {
-    await Promise.all(bulbs.map((b) => b.setHue(initialHue)));
+    await Promise.all(
+      bulbs.map(async (b) => {
+        b.setHue(initialHue);
+        b.setBrightness(80);
+      })
+    );
   }
-
-  const minLoudness = Math.min(
-    ...songAnalysis.sections.map(({ loudness }) => loudness)
-  );
 
   while (starts && runningId === id) {
     console.clear();
@@ -32,29 +34,26 @@ module.exports = async function onSongChange(id, songDetails, songAnalysis) {
     const tempo = getTempo(songAnalysis, duration);
     const loudness = getLoudness(songAnalysis, duration);
 
-    const loudnessPercentage = Math.max(0.1, 1 - loudness / minLoudness);
-
-    await Promise.all(
-      bulbs.map((b) => {
-        const brightness =
-          tick % 2 === 0 ? 80 * loudnessPercentage : 100 * loudnessPercentage;
-        return b.setBrightness(brightness, 0);
-      })
-    );
-
     console.log({
-      // ...songDetails,
-      loud: loudness / minLoudness,
-      minLoudness,
-      loudness,
-      pattern: "strobo",
+      ...songDetails,
+      pattern: "smooth",
       id,
       duration: duration / 1000,
       bulbs: bulbs.length,
       tempo,
       loudness,
       energy: songDetails.energy,
+      initialHue,
     });
+    console.log();
+
+    await Promise.all(
+      bulbs.map((b) => {
+        const offset = 40 * Math.sin(tick / 10);
+        const hue = initialHue + offset;
+        return b.setHue(hue);
+      })
+    );
 
     const nextTickIn = (60 / tempo) * 1000;
     const tickDuration = Date.now() - tickStart;
