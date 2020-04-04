@@ -11,7 +11,7 @@ module.exports = async function onSongChange(id, songDetails, songAnalysis) {
 
   const bulbs = Object.values(getBulbs());
 
-  const starts = songDetails.energy > 0.75 && songDetails.danceability > 0.7;
+  const starts = songDetails.energy > 0.7 && songDetails.danceability > 0.7;
 
   while (starts && runningId === id) {
     const tickStart = Date.now();

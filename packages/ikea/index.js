@@ -44,7 +44,6 @@ let server = http.createServer((req, res) => {
         authToken,
         trackSpotifyId
       );
-      console.log("start");
 
       await Promise.all([
         patterns.strobo(currentTrack, songDetails, getSongAnalysis),

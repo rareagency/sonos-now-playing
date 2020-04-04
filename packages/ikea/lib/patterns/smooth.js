@@ -14,14 +14,14 @@ module.exports = async function onSongChange(id, songDetails, songAnalysis) {
   // Set song color
   const initialHue = Math.round(songDetails.energy * 360);
 
-  const starts = songDetails.energy < 0.75;
-  console.log("smooth", starts);
+  const starts = songDetails.energy <= 0.7 || songDetails.tempo < 90;
 
   if (starts) {
     await Promise.all(
       bulbs.map(async (b) => {
-        b.setHue(initialHue);
-        b.setBrightness(80);
+        await b.setHue(initialHue);
+        await b.setBrightness(songDetails.valence < 0.1 ? 50 : 80);
+        await b.setSaturation(songDetails.valence < 0.1 ? 30 : 100);
       })
     );
   }
@@ -34,8 +34,15 @@ module.exports = async function onSongChange(id, songDetails, songAnalysis) {
     const tempo = getTempo(songAnalysis, duration);
     const loudness = getLoudness(songAnalysis, duration);
 
+    await Promise.all(
+      bulbs.map(async (b) => {
+        const offset = 40 * Math.sin(tick / 10);
+        const hue = initialHue + offset;
+        await b.setHue(hue);
+      })
+    );
+
     console.log({
-      ...songDetails,
       pattern: "smooth",
       id,
       duration: duration / 1000,
@@ -46,15 +53,7 @@ module.exports = async function onSongChange(id, songDetails, songAnalysis) {
       initialHue,
     });
     console.log();
-
-    await Promise.all(
-      bulbs.map((b) => {
-        const offset = 40 * Math.sin(tick / 10);
-        const hue = initialHue + offset;
-        return b.setHue(hue);
-      })
-    );
-
+    console.log(songDetails);
     const nextTickIn = (60 / tempo) * 1000;
     const tickDuration = Date.now() - tickStart;
 

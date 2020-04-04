@@ -30,6 +30,10 @@ let bulbs = {
       lampState.hue = hue;
       printScreen(lampState);
     },
+    setSaturation: async (saturation) => {
+      lampState.saturation = saturation;
+      printScreen(lampState);
+    },
   },
 };
 
