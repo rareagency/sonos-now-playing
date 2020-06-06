@@ -9,9 +9,13 @@ module.exports = async function onSongChange(id, songDetails, songAnalysis) {
   let tick = 0;
   const songStart = Date.now();
 
-  const bulbs = Object.values(getBulbs());
+  const bulbs = getBulbs();
 
   const starts = songDetails.energy > 0.7 && songDetails.danceability > 0.7;
+
+  const minLoudness = Math.abs(
+    Math.min(...songAnalysis.segments.map(({ loudness_max }) => loudness_max))
+  );
 
   while (starts && runningId === id) {
     const tickStart = Date.now();
@@ -19,33 +23,37 @@ module.exports = async function onSongChange(id, songDetails, songAnalysis) {
     const tempo = getTempo(songAnalysis, duration);
     const loudness = getLoudness(songAnalysis, duration);
 
+    const loudnessPercentage = Math.max(
+      0.1,
+      1 - Math.abs(loudness) / minLoudness
+    );
+
+    const brightness =
+      tick % 2 === 0 ? 80 * loudnessPercentage : 100 * loudnessPercentage;
     await Promise.all(
-      bulbs.map(async (b) => {
-        const brightness =
-          tick % 2 === 0
-            ? Math.round(80 + loudness)
-            : Math.min(100, Math.round(110 + loudness));
+      bulbs.map(async b => {
         await b.setBrightness(brightness, 0);
         await b.setHue(Math.round(Math.random() * 360));
       })
     );
 
     console.log({
-      ...songDetails,
+      brightness,
+      loudnessPercentage,
       pattern: "party",
       id,
       duration: duration / 1000,
       bulbs: bulbs.length,
       tempo,
       loudness,
-      energy: songDetails.energy,
+      energy: songDetails.energy
     });
     const nextTickIn = (60 / tempo) * 1000;
     const tickDuration = Date.now() - tickStart;
 
     tick++;
 
-    await new Promise((resolve) =>
+    await new Promise(resolve =>
       setTimeout(resolve, nextTickIn - tickDuration)
     );
   }

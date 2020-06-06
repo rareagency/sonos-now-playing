@@ -9,7 +9,7 @@ module.exports = async function onSongChange(id, songDetails, songAnalysis) {
   let tick = 0;
   const songStart = Date.now();
 
-  const bulbs = Object.values(getBulbs());
+  const bulbs = getBulbs();
 
   // Set song color
   const initialHue = Math.round(songDetails.energy * 360);
@@ -18,7 +18,7 @@ module.exports = async function onSongChange(id, songDetails, songAnalysis) {
 
   if (starts) {
     await Promise.all(
-      bulbs.map(async (b) => {
+      bulbs.map(async b => {
         await b.setHue(initialHue);
         await b.setBrightness(songDetails.valence < 0.1 ? 50 : 80);
         await b.setSaturation(songDetails.valence < 0.1 ? 30 : 100);
@@ -27,15 +27,13 @@ module.exports = async function onSongChange(id, songDetails, songAnalysis) {
   }
 
   while (starts && runningId === id) {
-    console.clear();
-
     const tickStart = Date.now();
     const duration = Date.now() - songStart;
     const tempo = getTempo(songAnalysis, duration);
     const loudness = getLoudness(songAnalysis, duration);
 
     await Promise.all(
-      bulbs.map(async (b) => {
+      bulbs.map(async b => {
         const offset = 40 * Math.sin(tick / 10);
         const hue = initialHue + offset;
         await b.setHue(hue);
@@ -50,7 +48,7 @@ module.exports = async function onSongChange(id, songDetails, songAnalysis) {
       tempo,
       loudness,
       energy: songDetails.energy,
-      initialHue,
+      initialHue
     });
     console.log();
     console.log(songDetails);
@@ -59,7 +57,7 @@ module.exports = async function onSongChange(id, songDetails, songAnalysis) {
 
     tick++;
 
-    await new Promise((resolve) =>
+    await new Promise(resolve =>
       setTimeout(resolve, nextTickIn - tickDuration)
     );
   }
