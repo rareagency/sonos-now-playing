@@ -4,11 +4,13 @@ const spotify = require("./lib/spotify");
 const patterns = require("./lib/patterns");
 
 let currentTrack;
+let stopCurrentPattern;
+let currentPattern;
 
 let server = http.createServer((req, res) => {
   const buffer = [];
 
-  req.on("data", data => buffer.push(data.toString()));
+  req.on("data", (data) => buffer.push(data.toString()));
   req.on("end", async () => {
     res.end();
 
@@ -48,11 +50,24 @@ let server = http.createServer((req, res) => {
         trackSpotifyId
       );
 
-      await Promise.all([
-        patterns.strobo(currentTrack, songDetails, getSongAnalysis),
-        patterns.smooth(currentTrack, songDetails, getSongAnalysis),
-        patterns.party(currentTrack, songDetails, getSongAnalysis)
-      ]);
+      if (stopCurrentPattern) {
+        console.log("Stopping", currentPattern.patternName);
+        stopCurrentPattern();
+      }
+
+      for (const pattern of patterns) {
+        if (pattern.shouldStart(currentTrack, songDetails, getSongAnalysis)) {
+          console.log("Initiating", pattern.patternName);
+          currentPattern = pattern;
+          stopCurrentPattern = pattern(
+            currentTrack,
+            songDetails,
+            getSongAnalysis
+          );
+
+          break;
+        }
+      }
     }
   });
 });
