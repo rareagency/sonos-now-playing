@@ -1,41 +1,39 @@
 const { getBulbs } = require("../lamps");
-const { getTempo, getLoudness } = require("../songProperties");
+const { getTempo } = require("../songProperties");
 
-const shouldStart = () => {
-  return true;
+const shouldStart = (id, songDetails) => {
+  return (
+    songDetails.name.toLowerCase().includes("police") ||
+    songDetails.artists.some((artist) =>
+      artist.name.toLowerCase().includes("police")
+    )
+  );
 };
 
 module.exports = function onSongChange(id, songDetails, songAnalysis) {
   let running = true;
-
   (async () => {
     let tick = 0;
     const songStart = Date.now();
-
     const bulbs = getBulbs();
-
-    // Set song color
-    const initialHue = Math.round(songDetails.energy * 360);
 
     await Promise.all(
       bulbs.map(async (b) => {
-        await b.setHue(initialHue);
-        await b.setBrightness(songDetails.valence < 0.1 ? 50 : 80);
-        await b.setSaturation(songDetails.valence < 0.1 ? 30 : 100);
+        await b.setBrightness(50);
+        await b.setSaturation(100);
       })
     );
 
     while (running) {
       const tickStart = Date.now();
       const duration = Date.now() - songStart;
+
       const tempo = getTempo(songAnalysis, duration);
-      const loudness = getLoudness(songAnalysis, duration);
 
       await Promise.all(
-        bulbs.map(async (b) => {
-          const offset = 40 * Math.sin(tick / 10);
-          const hue = initialHue + offset;
-          await b.setHue(hue);
+        bulbs.map((b, i) => {
+          const hue = (tick + i) % 2 === 0 ? 0 : 240;
+          return b.setHue(hue);
         })
       );
 
@@ -55,4 +53,4 @@ module.exports = function onSongChange(id, songDetails, songAnalysis) {
 };
 
 module.exports.shouldStart = shouldStart;
-module.exports.patternName = "smooth";
+module.exports.patternName = "police";

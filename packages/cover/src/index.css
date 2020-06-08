@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap");
+
+html,
+body,
+#root,
+.App {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60px;
+}
+
+h1,
+h2 {
+  padding: 0 1rem;
+  display: inline;
+  color: #fff;
+  font-family: "Abril Fatface", cursive;
+}

@@ -52,6 +52,7 @@ let server = http.createServer((req, res) => {
 
       if (stopCurrentPattern) {
         console.log("Stopping", currentPattern.patternName);
+
         stopCurrentPattern();
       }
 

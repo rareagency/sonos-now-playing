@@ -9,7 +9,7 @@ const shouldStart = (id, songDetails, songAnalysis) => {
   );
 };
 
-module.exports = async function onSongChange(id, songDetails, songAnalysis) {
+module.exports = function onSongChange(id, songDetails, songAnalysis) {
   let running = true;
 
   (async () => {

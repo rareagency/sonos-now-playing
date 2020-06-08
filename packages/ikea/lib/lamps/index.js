@@ -33,8 +33,8 @@ async function init() {
   tradfri.on("error", (err) => {
     console.log({ err });
   });
-
-  await tradfri.connect("4d3ffa1074c111ea9450af76b0fc788b", "1EzHOXDzB9Qmc5Zw");
+  const { identity, psk } = await tradfri.authenticate("6tc5XwvNnTjbrIYG");
+  await tradfri.connect(identity, psk);
 
   tradfri.on("device updated", tradfri_deviceUpdated).observeDevices();
 }
@@ -59,7 +59,6 @@ async function init() {
     function printScreen(state) {
       console.clear();
       let row = "";
-
       for (let i = 0; i < 16; i++) {
         for (let o = 0; o < 32; o++) {
           row += chalk.bgHsl(state.hue, state.saturation, state.lightness)(" ");
@@ -68,7 +67,6 @@ async function init() {
         row = "";
       }
       console.log();
-
       console.log(lampState);
     }
 
