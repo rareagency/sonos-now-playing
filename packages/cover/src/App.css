@@ -13,15 +13,28 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.Content-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.Cover-image {
+  display: block;
+  height: 15rem;
+  width: 15rem;
+}
+
+.App-header {
+  display: block;
   color: white;
+  font-weight: normal;
+  margin: 1rem 0;
+}
+
+h2.App-header {
+  font-weight: 800;
+  letter-spacing: 0.2rem;
 }
 
 .App-link {
