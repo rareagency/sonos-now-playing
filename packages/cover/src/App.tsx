@@ -100,7 +100,14 @@ function App() {
       const img = new Image();
       img.crossOrigin = "Anonymous";
 
-      const activeSonosState = data.find((d: any) => d.coordinator.state.playbackState === 'PLAYING').coordinator.state;
+      const activeSonosState = data.find(
+        (d: any) => d.coordinator.state.playbackState === "PLAYING"
+      ).coordinator.state;
+
+      if (!activeSonosState) {
+        setTimeout(fetchCover, 5000);
+        return;
+      }
       img.src = activeSonosState.currentTrack.albumArtUri;
 
       img.onload = () => {
