@@ -51,7 +51,7 @@ function getAverageRGB(imgEl: any) {
 
 function componentToHex(c: any) {
   var hex = c.toString(16);
-  return hex.length == 1 ? "0" + hex : hex;
+  return hex.length === 1 ? "0" + hex : hex;
 }
 
 function rgbToHex(r: any, g: any, b: any) {
@@ -99,12 +99,15 @@ function App() {
 
       const img = new Image();
       img.crossOrigin = "Anonymous";
-      img.src = data[0].coordinator.state.currentTrack.albumArtUri;
+
+      const activeSonosState = data.find((d: any) => d.coordinator.state.playbackState === 'PLAYING').coordinator.state;
+      img.src = activeSonosState.currentTrack.albumArtUri;
+
       img.onload = () => {
         setRGB(getAverageRGB(img));
       };
 
-      setCover(data[0].coordinator.state);
+      setCover(activeSonosState);
       setTimeout(fetchCover, 5000);
     }
     fetchCover();
