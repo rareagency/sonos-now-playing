@@ -116,10 +116,13 @@ function App() {
   return (
     <div
       className="App"
-      style={{ backgroundImage: `url(${cover?.currentTrack.albumArtUri})` }}
+      style={{
+        background: invertColor(rgbToHex(rgb.r, rgb.g, rgb.b)),
+      }}
     >
-      <div>
+      <div className="Content-container">
         <h1
+          className="App-header"
           style={{
             color: rgbToHex(rgb.r, rgb.g, rgb.b),
             background: invertColor(rgbToHex(rgb.r, rgb.g, rgb.b)),
@@ -127,9 +130,9 @@ function App() {
         >
           {cover?.currentTrack.title}
         </h1>
-        <br />
-        <br />
+        <img className="Cover-image" src={cover?.currentTrack.albumArtUri} />
         <h2
+          className="App-header"
           style={{
             color: rgbToHex(rgb.r, rgb.g, rgb.b),
             background: invertColor(rgbToHex(rgb.r, rgb.g, rgb.b)),
