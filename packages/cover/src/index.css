@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bungee&display=swap");
 
 html,
 body,
@@ -12,7 +13,7 @@ body,
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 60px;
+  font-size: 40px;
 }
 
 h1,
@@ -20,5 +21,9 @@ h2 {
   padding: 0 1rem;
   display: inline;
   color: #fff;
-  font-family: "Abril Fatface", cursive;
+  font-family: "Bungee Shade";
+}
+
+h1 {
+  font-family: "Bungee";
 }
