@@ -88,21 +88,24 @@ function App() {
   const [rgb, setRGB] = React.useState<any>({ r: 0, g: 0, b: 0 });
   React.useEffect(() => {
     async function fetchCover() {
-      const res = await fetch("http://localhost:5005/zones", {
-        mode: "cors",
-        headers: {
-          moro: "poro",
-          Authorization: "Basic " + btoa("admin:password"),
-        },
-      });
-      const data = await res.json();
+      let activeSonos;
+      try {
+        const res = await fetch("http://localhost:5005/zones", {
+          mode: "cors",
+          headers: {
+            moro: "poro",
+            Authorization: "Basic " + btoa("admin:password"),
+          },
+        });
+        const data = await res.json();
 
-      const img = new Image();
-      img.crossOrigin = "Anonymous";
-
-      const activeSonos = data.find(
-        (d: any) => d.coordinator.state.playbackState === "PLAYING"
-      );
+        activeSonos = data.find(
+          (d: any) => d.coordinator.state.playbackState === "PLAYING"
+        );
+      } catch (error) {
+        setTimeout(fetchCover, 5000);
+        return;
+      }
 
       if (!activeSonos) {
         setTimeout(fetchCover, 5000);
@@ -111,6 +114,8 @@ function App() {
 
       const activeSonosState = activeSonos.coordinator.state;
 
+      const img = new Image();
+      img.crossOrigin = "Anonymous";
       img.src = activeSonosState.currentTrack.albumArtUri;
 
       img.onload = () => {
