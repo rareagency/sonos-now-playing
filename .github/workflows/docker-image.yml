@@ -28,4 +28,5 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
+          platforms: linux/arm/v7
           tags: rikukissa/sonos-now-playing:latest
