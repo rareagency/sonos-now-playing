@@ -14,6 +14,7 @@ body,
   align-items: center;
   justify-content: center;
   font-size: 40px;
+  background: #000;
 }
 
 h1,
@@ -26,4 +27,11 @@ h2 {
 
 h1 {
   font-family: "Bungee";
+}
+.not-playing {
+  text-align: center;
+}
+.not-playing img {
+  width: 80%;
+  margin-bottom: 1rem;
 }

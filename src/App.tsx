@@ -93,7 +93,6 @@ function App() {
         const res = await fetch("http://localhost:5005/zones", {
           mode: "cors",
           headers: {
-            moro: "poro",
             Authorization: "Basic " + btoa("admin:password"),
           },
         });
@@ -127,6 +126,16 @@ function App() {
     }
     fetchCover();
   }, []);
+
+  if (!cover) {
+    return (
+      <div className="not-playing">
+        <img src="https://c.tenor.com/AurBzJFYMcsAAAAM/sleeping-at-desk-computer.gif" />
+        <br />
+        <h1>No music playing</h1>
+      </div>
+    );
+  }
 
   return (
     <div
