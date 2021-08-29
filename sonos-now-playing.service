@@ -1,0 +1,15 @@
+[Unit]
+Description=Sonos API
+Requires=docker.service
+After=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-(/usr/bin/docker stop sonos-now-playing) || true
+ExecStartPre=-(/usr/bin/docker rm sonos-now-playing) || true
+ExecStartPre=/usr/bin/docker pull rikukissa/sonos-now-playing
+ExecStart=/usr/bin/docker run -p 3000:80 --name sonos-now-playing --rm rikukissa/sonos-now-playing
+
+[Install]
+WantedBy=default.target
