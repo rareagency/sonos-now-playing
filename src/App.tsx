@@ -144,6 +144,7 @@ function App() {
         background: invertColor(rgbToHex(rgb.r, rgb.g, rgb.b)),
       }}
     >
+      <img className="blur-bg" src={cover?.currentTrack.albumArtUri} />
       <div className="Content-container">
         <h1
           className="App-header"
